@@ -1,37 +1,16 @@
 <% provide(:title, '注册') %>
-<h1>注册</h1>
+<h1 class="center">注册</h1>
 
-<div>
-  <div>
-    <%= form_for(@user) do |f| %>
-    <% if @user.errors.any? %>
-    <div class="error_message">
-      <h2>Form is invalid</h2>
-      <ul>
-	<% @user.errors.full_messages.each do |message| %>
-	<li><%= message %></li>
-	<% end %>
-      </ul>
-    </div>
-    <% end %>
+<div  class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <%= simple_form_for(@user, html: { class: 'form-horizontal' }) do |f| %>
 
-    <div class="field">
-      <%= f.label :email, "电子邮件" %><br />
-      <%= f.email_field :email %>
-    </div>
+    <%= f.input :email, label: "电子邮件" %>
+    <%= f.input :password, label: "密码" %>
+    <%= f.input :password_confirmation, label: "密码确认", required: true %>
 
-    <div class="field">
-      <%= f.label :password, "密码" %><br />
-      <%= f.password_field :password %>
-    </div>
-
-    <div class="field">
-      <%= f.label :password_confirmation, "密码确认" %><br />
-      <%= f.password_field :password_confirmation %>
-    </div>
-
-    <div class="actions">
-      <%= f.submit "创建账户" %>
+    <div class="form-actions center">
+      <%= f.submit "创建用户", :class => 'btn btn-primary' %>
     </div>
     <% end %>
   </div>
