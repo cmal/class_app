@@ -1,0 +1,7 @@
+<%= link_to "注册新用户", new_user_path, role: "button", class: "btn btn-default" %>
+<% if @users.any? %>
+<ul class="users">
+  <%= render @users %>
+</ul>
+<%= will_paginate @users %>
+<% end %>

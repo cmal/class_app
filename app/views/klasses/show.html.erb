@@ -1,0 +1,7 @@
+<h2><%= @klass.name %></h2>
+<% if @klass.members.any? %>
+<ul class="members">
+  <%= render @members %>
+</ul>
+<%= will_paginate @members %>
+<% end %>

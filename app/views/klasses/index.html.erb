@@ -1,0 +1,7 @@
+<%= link_to "添加新班级", new_klass_path, role: "button", class: "btn btn-default" %>
+<% if @klasses.any? %>
+<ul class="klasses">
+  <%= render @klasses %>
+</ul>
+<%= will_paginate @klasses %>
+<% end %>

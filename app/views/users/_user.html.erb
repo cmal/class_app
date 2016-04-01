@@ -1,0 +1,5 @@
+<li id="member-<%= user.id %>">
+  <span class="user_name"><%= link_to user.name, user_path(user) %></span>
+  <span class="edit"><%= link_to "编辑", edit_user_path(user) %></span>
+  <span class="delete">移除</span>
+</li>
