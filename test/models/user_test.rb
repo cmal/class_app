@@ -1,15 +1,36 @@
+# coding: utf-8
 require 'test_helper'
 
 class UserTest < ActiveSupport::TestCase
   def setup
-    @user = User.new(email: "test@example.com",
+    @user = User.new(name: "正确用户名",
+                     email: "test@example.com",
                      password: "testpass",
                      password_confirmation: "testpass")
   end
   test "test user should be valid" do
     assert @user.valid?
   end
-  
+  test "name should be present" do
+    @user.name = " "
+    assert_not @user.valid?
+  end
+
+  test "name validation should accept valid names" do
+    valid_names = ["王小明", "Tom Garry", "Lynch"]
+    valid_names.each do |valid_name|
+      @user.name = valid_name
+      assert @user.valid?, "#{valid_name.inspect} should be valid"
+    end
+  end
+  test "name should reject invalid names" do
+    invalid_names = ["中文Eng", "中 文", "Number1"]
+    invalid_names.each do |invalid_name|
+      @user.name = invalid_name
+      assert_not @user.valid?, "#{invalid_name.inspect} should be invalid"
+    end
+  end
+    
   test "email should be present" do
     @user.email = "  "
     assert_not @user.valid?

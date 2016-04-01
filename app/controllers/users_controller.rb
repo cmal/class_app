@@ -1,5 +1,7 @@
 # coding: utf-8
 class UsersController < ApplicationController
+  before_action :logged_in_user, only: [:edit, :update]
+  before_action :correct_user,   only: [:edit, :update]
   def show
     @user = User.find(params[:id])
   end
@@ -19,10 +21,54 @@ class UsersController < ApplicationController
     end
   end
 
+  def edit
+    @user = User.find(params[:id])
+  end
+
+  def update
+    @user = User.find(params[:id])
+    unless @user.authenticate(params[:user][:password])
+      flash[:danger] = "密码错误"
+      render 'edit'
+    else
+      unless params[:user][:new_password].blank? &&
+             params[:user][:new_password_confirmation].blank?
+        change_password = true
+        @user.password = params[:user][:new_password]
+        @user.password_confirmation = params[:user][:new_password_confirmation]
+      end
+      @user.assign_attributes({"name"=>params[:user][:name],
+                               "email"=>params[:user][:email]})
+      @user.assign_attributes({"password"=>params[:user][:password]}) \
+                             unless change_password
+      if @user.save
+        flash[:success] = "用户档案已更新"
+        redirect_to @user
+      else
+        change_msg_keys!(@user.errors.messages)
+        flash[:danger] = "更新密码失败"
+        render 'edit'
+      end
+    end
+  end
+  
   private
 
     def user_params
-      params.require(:user).permit(:email, :password,
+      params.require(:user).permit(:name, :email,
+                                   :password,
                                    :password_confirmation)
+    end
+
+    def logged_in_user
+      unless logged_in?
+        store_location
+        flash[:danger] = "请登录后修改"
+        redirect_to login_url
+      end
+    end
+    def correct_user
+      @user = User.find(params[:id])
+      redirect_to(root_url) unless current_user?(@user)
     end
 end

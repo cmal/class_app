@@ -1,3 +1,4 @@
+# coding: utf-8
 ENV['RAILS_ENV'] ||= 'test'
 require File.expand_path('../../config/environment', __FILE__)
 require 'rails/test_help'
@@ -11,4 +12,20 @@ class ActiveSupport::TestCase
   def is_logged_in?
     !session[:user_id].nil?
   end
+
+  def log_in_as(user)
+    if integration_test?
+      post login_path, session: { email:    user.email,
+                                  password: user.email.split('@')[0]+"pass" }
+    else
+      session[:user_id] = user.id
+    end
+  end
+
+  private
+
+    # true if in integration test
+    def integration_test?
+      defined?(post_via_redirect)
+    end
 end
