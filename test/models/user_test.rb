@@ -74,4 +74,15 @@ class UserTest < ActiveSupport::TestCase
   test "authenticated? should return false for a user with nil digest" do
     assert_not @user.authenticated?('')
   end
+
+  test "should join and leave a Class" do
+    user1 = users(:user1)
+    klass2 = klasses(:klass2)
+    assert_not user1.joined?(klass2)
+    user1.join(klass2)
+    assert user1.joined?(klass2)
+    assert klass2.members.include?(user1)
+    user1.leave(klass2)
+    assert_not user1.joined?(klass2)
+  end
 end

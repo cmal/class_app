@@ -1,3 +1,4 @@
+# coding: utf-8
 class User < ActiveRecord::Base
   attr_accessor :remember_token
   before_save { email.downcase! }
@@ -10,6 +11,8 @@ class User < ActiveRecord::Base
             uniqueness: { case_sensitive: false }
   has_secure_password
   validates :password, presence: true, length: { minimum: 6 }
+  has_many :relationships, foreign_key: "member_id", dependent: :destroy
+  has_many :klasses, through: :relationships, source: :klass
 
   # generate a hash digest of STRING
   def User.digest(string)
@@ -37,5 +40,17 @@ class User < ActiveRecord::Base
   
   def forget
     update_attribute(:remember_digest, nil)
+  end
+
+  def join(klass)
+    relationships.create(klass_id: klass.id)
+  end
+
+  def leave(klass)
+    relationships.find_by(klass_id: klass.id).destroy
+  end
+
+  def joined?(klass)
+    klasses.include?(klass)
   end
 end

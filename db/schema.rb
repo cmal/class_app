@@ -11,7 +11,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160329125339) do
+ActiveRecord::Schema.define(version: 20160401072730) do
+
+  create_table "klasses", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "relationships", force: :cascade do |t|
+    t.integer  "klass_id"
+    t.integer  "member_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "relationships", ["klass_id", "member_id"], name: "index_relationships_on_klass_id_and_member_id", unique: true
+  add_index "relationships", ["klass_id"], name: "index_relationships_on_klass_id"
+  add_index "relationships", ["member_id"], name: "index_relationships_on_member_id"
 
   create_table "users", force: :cascade do |t|
     t.string   "email"
