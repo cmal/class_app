@@ -1,5 +1,12 @@
 <li id="member-<%= user.id %>">
-  <span class="user_name"><%= link_to user.name, user_path(user) %></span>
-  <span class="edit"><%= link_to "编辑", edit_user_path(user) %></span>
-  <span class="delete">移除</span>
+  <%= link_to user.name, user_path(user), class: "user-name" %>
+  <% if current_user.admin? %>
+  <%= link_to "编辑", edit_user_path(user),
+      role: "button", class: "btn btn-xs btn-default" %>
+  <% if !user.admin? %>
+  <%= link_to "删除", user, method: :delete,
+      data: { confirm: "确认删除？" },
+      role: "button", class: "btn btn-xs btn-danger" %>
+  <% end %>
+  <% end %>
 </li>

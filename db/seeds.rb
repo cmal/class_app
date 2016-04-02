@@ -1,3 +1,4 @@
+# coding: utf-8
 # This file should contain all the record creation needed to seed the database with its default values.
 # The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
 #
@@ -15,6 +16,13 @@
                password:              password,
                password_confirmation: password)
 end
+
+User.create!(name:  "管理员",
+             email: "admin@admin.com",
+             password:              "password",
+             password_confirmation: "password",
+             admin: true)
+
 
 99.times do |n|
   name = "Class %03d" % (n+1)
