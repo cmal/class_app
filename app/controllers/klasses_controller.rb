@@ -38,6 +38,12 @@ class KlassesController < ApplicationController
     end
   end
 
+  def destroy
+    Klass.find(params[:id]).destroy
+    flash[:success] = "用户已删除"
+    redirect_to klasses_url
+  end
+
   private
 
   def klass_params

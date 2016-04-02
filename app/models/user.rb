@@ -14,6 +14,8 @@ class User < ActiveRecord::Base
   has_many :relationships, foreign_key: "member_id", dependent: :destroy
   has_many :klasses, through: :relationships, source: :klass
 
+  self.per_page = 10
+  
   # generate a hash digest of STRING
   def User.digest(string)
     cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST :

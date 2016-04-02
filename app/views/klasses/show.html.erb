@@ -1,7 +1,18 @@
-<h2><%= @klass.name %></h2>
+<div class="panel panel-default">
+  <div class="panel-heading"><b><%= @klass.name %></b>
+    <%= link_to '#', :class => 'pull-right' do %>
+    <span class="glyphicon glyphicon-plus"><strong>增人</strong></span>
+    <% end %>
+  </div>
 <% if @klass.members.any? %>
-<ul class="members">
+<table class="members table table-striped">
+  <tr><th>#</th><th>名称</th>
+    <% if current_user.admin? %>
+    <th>操作</th>
+    <% end %>
+  </tr>
   <%= render @members %>
-</ul>
+</table>
+</div>
 <%= will_paginate @members %>
 <% end %>

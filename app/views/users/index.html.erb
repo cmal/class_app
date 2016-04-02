@@ -1,7 +1,18 @@
-<%= link_to "注册新用户", new_user_path, role: "button", class: "btn btn-default" %>
+<div class="panel panel-default">
+  <div class="panel-heading"><b>用户列表</b>
+    <%= link_to new_user_path, :class => 'pull-right' do %>
+    <span class="glyphicon glyphicon-plus"><strong>新增用户</strong></span>
+    <% end %>
+  </div>
 <% if @users.any? %>
-<ul class="users">
+<table class="users table table-striped">
+  <tr><th>#</th><th>名称</th>
+    <% if current_user.admin? %>
+    <th>操作</th>
+    <% end %>
+  </tr>
   <%= render @users %>
-</ul>
+</table>
+</div>
 <%= will_paginate @users %>
 <% end %>

@@ -1,5 +1,5 @@
-<% provide(:title, "个人档案更新") %>
-<h1 class="center">个人档案更新</h1>
+<% provide(:title, "用户档案更新") %>
+<h1 class="center">用户档案更新</h1>
 
 <div class="row">
   <div class="col-md-6 col-md-offset-3">
@@ -8,9 +8,11 @@
     <%= f.input :name, label: '姓名' %>
     <%= f.input :email, label: '电子邮箱' %>
 
+    <% unless current_user.admin? && !current_user?(@user) %>
     <%= f.input :password, label: '验证密码' %>
     <%= f.input :new_password, label: '新密码', hint: '(不修改密码不需要填写)' %>
     <%= f.input :new_password_confirmation, label: '新密码确认', hint: '(不修改密码不需要填写)' %>
+    <% end %>
 
     <div class="form-actions center">
       <%= f.submit '保存更新', class: 'btn btn-primary btn-block' %>

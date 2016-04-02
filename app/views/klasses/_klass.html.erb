@@ -1,5 +1,13 @@
-<li id="member-<%= klass.id %>">
-  <span class="klass_name"><%= link_to klass.name, klass_path(klass) %></span>
-  <span class="edit"><%= link_to "编辑", edit_klass_path(klass) %></span>
-  <span class="delete">移除</span>
-</li>
+<tr id="klass-<%= klass.id %>">
+  <td class="klass-id"><%= klass.id %></td>
+  <td class="klass-name">
+    <%= link_to klass.name, klass_path(klass) %>
+  </td>
+  <td class="edit">
+    <%= link_to "编辑", edit_klass_path(klass),
+	role: "button", class: "btn btn-xs btn-default" %>
+    <%= link_to "删除", klass, method: :delete,
+	data: { confirm: "确认删除？" },
+	role: "button", class: "btn btn-xs btn-danger" %>
+  </td>
+</tr>

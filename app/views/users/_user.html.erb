@@ -1,12 +1,22 @@
-<li id="member-<%= user.id %>">
-  <%= link_to user.name, user_path(user), class: "user-name" %>
-  <% if current_user.admin? %>
-  <%= link_to "编辑", edit_user_path(user),
-      role: "button", class: "btn btn-xs btn-default" %>
-  <% if !user.admin? %>
-  <%= link_to "删除", user, method: :delete,
-      data: { confirm: "确认删除？" },
-      role: "button", class: "btn btn-xs btn-danger" %>
-  <% end %>
-  <% end %>
-</li>
+<tr id="member-<%= user.id %>">
+  <td class="user-id"><%= user.id %></td>
+  <td class: "user-name">
+    <%= link_to user.name, user_path(user) %>
+  </td>
+  <td class="edit">
+    <% if current_user.admin? %>
+    <%= link_to "编辑", edit_user_path(user),
+	role: "button", class: "btn btn-xs btn-default" %>
+    <% if current_page?(action: 'index') %>
+    <% if !user.admin? %>
+    <%= link_to "删除", user, method: :delete,
+        data: { confirm: "确认删除？" },
+        role: "button", class: "btn btn-xs btn-danger" %>
+    <% end %>
+    <% else %>
+    <%= link_to "移除", user.relationships.find_by(klass_id: @klass.id),
+	method: :delete, class: "btn btn-xs btn-danger" %>
+    <% end %>
+    <% end %>
+  </td>
+</tr>

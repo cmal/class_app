@@ -1,7 +1,18 @@
-<%= link_to "添加新班级", new_klass_path, role: "button", class: "btn btn-default" %>
+<div class="panel panel-default">
+  <div class="panel-heading"><b>班级列表</b>
+    <%= link_to new_klass_path, :class => 'pull-right' do %>
+    <span class="glyphicon glyphicon-plus"><strong>新增班级</strong></span>
+    <% end %>
+  </div>
 <% if @klasses.any? %>
-<ul class="klasses">
+<table class="klasses table table-striped">
+  <tr><th>#</th><th>名称</th>
+    <% if current_user.admin? %>
+    <th>操作</th>
+    <% end %>
+  </tr>
   <%= render @klasses %>
-</ul>
+</table>
+</div>
 <%= will_paginate @klasses %>
 <% end %>

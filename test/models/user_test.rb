@@ -75,7 +75,7 @@ class UserTest < ActiveSupport::TestCase
     assert_not @user.authenticated?('')
   end
 
-  test "should join and leave a Class" do
+  test "should join and leave a klass" do
     user1 = users(:user1)
     klass2 = klasses(:klass2)
     assert_not user1.joined?(klass2)

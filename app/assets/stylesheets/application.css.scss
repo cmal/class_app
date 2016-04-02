@@ -16,6 +16,15 @@
 @import "bootstrap-sprockets";
 @import "bootstrap";
 
+@media (min-width:992px){
+  .container {
+    width: 970px;
+  }
+  .container-fluid {
+    width: 970px;
+  }
+}
+
 /* universal */
 
 body {

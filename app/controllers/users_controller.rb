@@ -33,26 +33,30 @@ class UsersController < ApplicationController
 
   def update
     @user = User.find(params[:id])
-    unless @user.authenticate(params[:user][:password])
-      flash[:danger] = "密码错误"
-      render 'edit'
+    if admin_but_not_current?
+      update_by_admin
     else
-      unless params[:user][:new_password].blank? &&
-             params[:user][:new_password_confirmation].blank?
-        change_password = true
-        @user.password = params[:user][:new_password]
-        @user.password_confirmation = params[:user][:new_password_confirmation]
-      end
-      @user.assign_attributes({"name"=>params[:user][:name],
-                               "email"=>params[:user][:email]})
-      @user.assign_attributes({"password"=>params[:user][:password]}) unless change_password
-      if @user.save
-        flash[:success] = "用户档案已更新"
-        redirect_to @user
-      else
-        change_msg_keys!(@user.errors.messages)
-        flash[:danger] = "更新密码失败"
+      unless @user.authenticate(params[:user][:password])
+        flash[:danger] = "密码错误"
         render 'edit'
+      else
+        unless params[:user][:new_password].blank? &&
+               params[:user][:new_password_confirmation].blank?
+          change_password = true
+          @user.password = params[:user][:new_password]
+          @user.password_confirmation = params[:user][:new_password_confirmation]
+        end
+        @user.assign_attributes({"name"=>params[:user][:name],
+                                 "email"=>params[:user][:email]})
+        @user.assign_attributes({"password"=>params[:user][:password]}) unless change_password
+        if @user.save
+          flash[:success] = "用户档案已更新"
+          redirect_to @user
+        else
+          change_msg_keys!(@user.errors.messages)
+          flash[:danger] = "更新密码失败"
+          render 'edit'
+        end
       end
     end
   end
@@ -62,7 +66,18 @@ class UsersController < ApplicationController
     flash[:success] = "用户已删除"
     redirect_to users_url
   end
-  
+
+  def update_by_admin
+    @user.update_attributes({"name"=>params[:user][:name],
+                             "email"=>params[:user][:email]})
+    if @user.save(validate: false)
+      flash[:success] = "用户档案已更新"
+      redirect_to @user
+    else
+      flash[:danger] = "更新用户档案失败"
+      render 'edit'
+    end
+  end
   private
 
     def user_params
@@ -80,9 +95,18 @@ class UsersController < ApplicationController
     end
     def correct_user
       @user = User.find(params[:id])
-      redirect_to(root_url) unless current_user?(@user)
+      unless (current_user?(@user) || current_user.admin?)
+        flash[:danger] = "您没有变更该用户的权限"
+        redirect_to root_url
+      end
     end
     def admin_user
-      redirect_to(root_url) unless current_user.admin?
+      unless current_user.admin?
+        flash[:danger] = "您没有管理员权限"
+        redirect_to root_url
+      end
+    end
+    def admin_but_not_current?
+      current_user.admin? && !current_user?(@user)
     end
 end
