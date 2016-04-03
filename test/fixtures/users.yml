@@ -3,16 +3,16 @@
 user1:
   name: user one
   email: user1@example.com
-  password_digest: <%= User.digest('user1pass') %>
+  password_digest: <%= User.digest('password') %>
   admin: true
-  
+
 user2:
   name: user two
   email: user2@example.com
-  password_digest: <%= User.digest('user2pass') %>
+  password_digest: <%= User.digest('password') %>
 
 <% for n in 3..50 %>
-user_<%= n %>:
+user<%= n %>:
   name:  <%=  Faker::Name.name %>
   email: <%= "user-#{n}@example.com" %>
   password_digest: <%= User.digest('password') %>

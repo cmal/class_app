@@ -1,0 +1,1 @@
+<%= link_to user.name, relationship_path(user.relationships.find_by(klass_id: @klass.id)), method: :delete, remote: true, class: "btn btn-default remove-user-btn", id: "user-"+user.id.to_s %>

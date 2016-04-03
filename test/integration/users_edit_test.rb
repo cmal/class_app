@@ -11,7 +11,7 @@ class UsersEditTest < ActionDispatch::IntegrationTest
     get edit_user_path(@user)
     patch user_path(@user), user: { name: ' ',
                                     email: 'email@fail.ed',
-                                    password: 'user2pass' }
+                                    password: 'password' }
     assert_template 'users/edit'
   end
 
@@ -23,7 +23,7 @@ class UsersEditTest < ActionDispatch::IntegrationTest
     email = "right@email.com"
     patch user_path(@user), user: { name: name,
                                     email: email,
-                                    password: "user2pass" }
+                                    password: "password" }
     assert_not flash.empty?
     assert_redirected_to @user
     @user.reload
@@ -49,7 +49,7 @@ class UsersEditTest < ActionDispatch::IntegrationTest
     email = @user.email
     patch user_path(@user), user: { name: name,
                                     email: email,
-                                    password: "user2pass",
+                                    password: "password",
                                     new_password: "newpassword",
                                     new_password_confirmation: "newpassword" }
     assert_not flash.empty?
@@ -59,7 +59,7 @@ class UsersEditTest < ActionDispatch::IntegrationTest
     assert_equal @user.email, email
   end
 
-  test "successful edit profile " do
+  test "successful edit profile" do
     log_in_as(@admin)
     get edit_user_path(@user)
     name = "Right Name"

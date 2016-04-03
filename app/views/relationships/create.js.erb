@@ -1,0 +1,2 @@
+$("<%= escape_javascript(render :partial => "users/remove_user_button", :locals => { :user => @user }) %>").appendTo("#member-list");
+$("#non-member-list #user-<%= @user.id %>").remove();

@@ -3,11 +3,13 @@
   <td class="klass-name">
     <%= link_to klass.name, klass_path(klass) %>
   </td>
+  <% if current_user.admin? %>
   <td class="edit">
-    <%= link_to "编辑", edit_klass_path(klass),
+    <%= link_to "改名", edit_klass_path(klass),
 	role: "button", class: "btn btn-xs btn-default" %>
     <%= link_to "删除", klass, method: :delete,
 	data: { confirm: "确认删除？" },
 	role: "button", class: "btn btn-xs btn-danger" %>
   </td>
+  <% end %>
 </tr>

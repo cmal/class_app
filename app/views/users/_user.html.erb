@@ -3,8 +3,8 @@
   <td class: "user-name">
     <%= link_to user.name, user_path(user) %>
   </td>
+  <% if current_user.admin? %>
   <td class="edit">
-    <% if current_user.admin? %>
     <%= link_to "编辑", edit_user_path(user),
 	role: "button", class: "btn btn-xs btn-default" %>
     <% if current_page?(action: 'index') %>
@@ -14,9 +14,9 @@
         role: "button", class: "btn btn-xs btn-danger" %>
     <% end %>
     <% else %>
-    <%= link_to "移除", user.relationships.find_by(klass_id: @klass.id),
+      <%= link_to "移除", user.relationships.find_by(klass_id: @klass.id),
 	method: :delete, class: "btn btn-xs btn-danger" %>
     <% end %>
-    <% end %>
   </td>
+  <% end %>
 </tr>

@@ -2,8 +2,9 @@ require 'test_helper'
 
 class UsersControllerTest < ActionController::TestCase
   def setup
-    @user1 = users(:user1)
-    @user2 = users(:user2)
+    @admin = users(:user1)
+    @user = users(:user2)
+    @other_user = users(:user3)
   end
 
   test "should get new" do
@@ -11,40 +12,52 @@ class UsersControllerTest < ActionController::TestCase
     assert_response :success
   end
   
-  test "should redirect edit when not logged in" do
-    get :edit, id: @user1
+  test "should redirect edit/update/destroy when not logged in" do
+    get :edit, id: @user
     assert_redirected_to login_url
-  end
 
-  test "should redirect update when not logged in" do
-    patch :update, id: @user1, user: { name: @user1.name, email: @user1.email }
+    patch :update, id: @user, user: { name: @user.name, email: @user.email }
     assert_redirected_to login_url
-  end
 
-  test "should redirect edit when logged in as wrong user" do
-    log_in_as(@user2)
-    get :edit, id: @user1
-    assert_redirected_to root_url
-  end
-
-  test "should redirect update when logged in as wrong user" do
-    log_in_as(@user2)
-    patch :update, id: @user1, user: { name: @user1.name, email: @user1.email }
-    assert_redirected_to root_url
-  end
-  test "should redirect destroy when not logged in" do
     assert_no_difference 'User.count' do
-      delete :destroy, id: @user1
+      delete :destroy, id: @user
     end
+    assert_redirected_to login_url
+  end
+
+  test "should redirect edit/update when logged in as wrong user" do
+    log_in_as(@user)
+    get :edit, id: @other_user
+    assert_redirected_to login_url
+
+    patch :update, id: @other_user, user: { name: @other_user.name, email: @other_user.email }
     assert_redirected_to login_url
   end
 
   test "should redirect destroy when logged in as a non-admin" do
-    log_in_as(@user2)
+    log_in_as(@user)
     assert_no_difference 'User.count' do
-      delete :destroy, id: @user1
+      delete :destroy, id: @other_user
     end
-    assert_redirected_to root_url
+    assert_redirected_to login_url
   end
-  
+
+  test "should redirect show when logged in as wrong non-admin user" do
+    log_in_as(@user)
+    get :show, id: @other_user
+    assert_redirected_to login_url
+  end
+
+  test "should get show when logged in as correct user" do
+    log_in_as(@user)
+    get :show, id: @user
+    assert_response :success
+  end
+
+  test "should get show when logged in as admin user" do
+    log_in_as(@admin)
+    get :show, id: @user
+    assert_response :success
+  end
+
 end

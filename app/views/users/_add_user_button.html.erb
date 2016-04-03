@@ -1,0 +1,1 @@
+<%= link_to user.name, relationships_path(user.relationships.find_by(klass_id: @klass.id), member_id: user.id, klass_id: @klass.id), method: :post, remote: true, class: "btn btn-default add-user-btn", id: "user-"+user.id.to_s %>

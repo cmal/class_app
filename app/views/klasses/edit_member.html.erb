@@ -1,0 +1,18 @@
+<div class="panel panel-default">
+  <div class="panel-heading"><b>成员列表</b>
+  </div>
+  <div class="panel-body" id="member-list">
+    <% for member in @klass.members %>
+    <%= render :partial => "users/remove_user_button", :locals => { :user => member } %>
+    <% end %>
+  </div>
+</div>
+<div class="panel panel-default">
+  <div class="panel-heading"><b>非成员列表</b>
+  </div>
+  <div class="panel-body" id="non-member-list">
+    <% for user in (User.all-@klass.members) %>
+    <%= render :partial => "users/add_user_button", :locals => { :user => user } %>
+    <% end %>
+  </div>
+</div>

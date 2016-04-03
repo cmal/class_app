@@ -1,18 +1,24 @@
 <div class="panel panel-default">
   <div class="panel-heading"><b><%= @klass.name %></b>
-    <%= link_to '#', :class => 'pull-right' do %>
-    <span class="glyphicon glyphicon-plus"><strong>增人</strong></span>
+    <% if current_user.admin? %>
+    <%= link_to edit_member_path, :class => 'pull-right' do %>
+    <span class="glyphicon glyphicon-edit"><strong>改变成员</strong></span>
+    <% end %>
     <% end %>
   </div>
 <% if @klass.members.any? %>
 <table class="members table table-striped">
-  <tr><th>#</th><th>名称</th>
+  <tr><th>#</th><th>姓名</th>
     <% if current_user.admin? %>
     <th>操作</th>
     <% end %>
   </tr>
   <%= render @members %>
 </table>
+<% else %>
+<div class="panel-body">
+  暂无成员
+</div>
+<% end %>
 </div>
 <%= will_paginate @members %>
-<% end %>

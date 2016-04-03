@@ -6,13 +6,13 @@
   </div>
 <% if @users.any? %>
 <table class="users table table-striped">
-  <tr><th>#</th><th>名称</th>
+  <tr><th>#</th><th>姓名</th>
     <% if current_user.admin? %>
     <th>操作</th>
     <% end %>
   </tr>
   <%= render @users %>
 </table>
-</div>
 <%= will_paginate @users %>
+</div>
 <% end %>

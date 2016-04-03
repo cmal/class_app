@@ -1,7 +1,8 @@
 # coding: utf-8
 class UsersController < ApplicationController
-  before_action :logged_in_user, only: [:index, :edit, :update, :destroy]
-  before_action :correct_user,   only: [:edit, :update]
+  before_action :logged_in_user,
+                only: [:index, :edit, :update, :destroy, :show]
+  before_action :correct_user,   only: [:edit, :update, :show]
   before_action :admin_user,     only: [:destroy]
 
   def index
@@ -86,26 +87,15 @@ class UsersController < ApplicationController
                                    :password_confirmation)
     end
 
-    def logged_in_user
-      unless logged_in?
-        store_location
-        flash[:danger] = "请登录后修改"
-        redirect_to login_url
-      end
-    end
     def correct_user
       @user = User.find(params[:id])
       unless (current_user?(@user) || current_user.admin?)
-        flash[:danger] = "您没有变更该用户的权限"
-        redirect_to root_url
+        flash[:danger] = "您没有执行该操作的权限"
+        store_location
+        redirect_to login_url
       end
     end
-    def admin_user
-      unless current_user.admin?
-        flash[:danger] = "您没有管理员权限"
-        redirect_to root_url
-      end
-    end
+
     def admin_but_not_current?
       current_user.admin? && !current_user?(@user)
     end

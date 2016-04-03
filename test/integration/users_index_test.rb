@@ -7,10 +7,11 @@ class UsersIndexTest < ActionDispatch::IntegrationTest
     @non_admin = users(:user2)
   end
 
-  test "index as admin including pagination and delete links" do
+  test "index as admin including new and pagination and delete links" do
     log_in_as(@admin)
     get users_path
     assert_template 'users/index'
+    assert_select 'a[href=?]', new_user_path, text: '新增用户'
     assert_select 'div.pagination'
     first_page_of_users = User.paginate(page: 1)
     first_page_of_users.each do |user|

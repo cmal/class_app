@@ -2,7 +2,9 @@ require 'test_helper'
 
 class RelationshipTest < ActiveSupport::TestCase
   def setup
-    @relationship = Relationship.new(klass_id: 1, member_id: 2)
+    @user = User.first
+    @klass = Klass.first
+    @relationship = Relationship.new(klass_id: @klass.id, member_id: @user.id)
   end
 
   test "should be valid" do

@@ -13,10 +13,10 @@ class ActiveSupport::TestCase
     !session[:user_id].nil?
   end
 
-  def log_in_as(user)
+  def log_in_as(user, following_url=nil)
     if integration_test?
       post login_path, session: { email:    user.email,
-                                  password: user.email.split('@')[0]+"pass" }
+                                  password: "password" }
     else
       session[:user_id] = user.id
     end

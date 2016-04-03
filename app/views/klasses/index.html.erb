@@ -1,7 +1,9 @@
 <div class="panel panel-default">
   <div class="panel-heading"><b>班级列表</b>
+    <% if current_user.admin? %>
     <%= link_to new_klass_path, :class => 'pull-right' do %>
     <span class="glyphicon glyphicon-plus"><strong>新增班级</strong></span>
+    <% end %>
     <% end %>
   </div>
 <% if @klasses.any? %>
@@ -13,6 +15,6 @@
   </tr>
   <%= render @klasses %>
 </table>
+<% end %>
 </div>
 <%= will_paginate @klasses %>
-<% end %>

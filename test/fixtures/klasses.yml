@@ -1,7 +1,9 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 klass1:
-  name: Class One
+  name: Class001
 
-klass2:
-  name: Class Two
+<% for n in 2..50 do %>
+klass<%= n %>:
+  name: Class<%= "%03d" % n %>
+<% end %>
